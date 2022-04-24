@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        (function(doc, win) {
+            if (!win.addEventListener) return;
+            var docEl = document.documentElement;
+
+            function setFont() {
+                var clientWidth = docEl.clientWidth;
+                var k = 750;
+                docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                var html = document.getElementsByTagName('html')[0];
+                var settedFs = settingFs = parseInt(100 * (clientWidth / 750));
+                var whileCount = 0;
+                while (true) {
+                    var realFs = parseInt(window.getComputedStyle(html).fontSize);
+                    var delta = realFs - settedFs;
+                    //不相等
+                    if (Math.abs(delta) >= 1) {
+                        if (delta > 0) {
+                            settingFs--;
+                        } else {
+                            settingFs++;
+                        }
+                        html.setAttribute('style', 'font-size:' + settingFs + 'px!important');
+                    } else {
+                        break;
+                    }
+                    if (whileCount++ > 100) {
+                        break
+                    }
+                }
+            };
+            setFont();
+            setTimeout(function() {
+                setFont();
+            }, 300);
+            doc.addEventListener('DOMContentLoaded', setFont, false);
+            win.addEventListener('resize', setFont, false);
+            win.addEventListener('load', setFont, false);
+        })(document, window);
+    </script>
+</body>
+
+</html>
